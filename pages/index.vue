@@ -5,16 +5,22 @@
       width="700px"
       src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pok%C3%A9mon_logo.svg/2560px-International_Pok%C3%A9mon_logo.svg.png"
     />
+    <v-text-field
+      v-model="filters"
+      outlined
+      label="Pokédex National"
+    />
     <div class="content">
       <div class="m">
-        <div v-for="(pokemon, index) in pokemons" :key="index" class="mr">
+        <div v-for="(pokemon, index) in filtersPoke" :key="index" class="mr">
           <v-card
             class="mx-auto m-2"
             width="300px"
           >
             <v-img
               :src="pokemon.url"
-              height="300px"
+              height="350px"
+              contain
             />
 
             <v-card-title>
@@ -58,7 +64,8 @@ export default {
       isActive: true,
       pokemons: [],
       modalInfo: false,
-      pokeData: []
+      pokeData: [],
+      filters: ''
     }
   },
   async fetch () {
@@ -67,11 +74,18 @@ export default {
       const reponse = await axios.get(`https://pokeapi.co/api/v2/pokemon/${i + 1}`)
       const pokemon = {
         name: reponse.data.name,
+        order: reponse.data.order,
         abilities: reponse.data.abilities,
         powers: reponse.data.stats,
-        url: reponse.data.sprites.front_default
+        type: reponse.data.types,
+        url: reponse.data.sprites.other.dream_world.front_default
       }
       instance.pokemons.push(pokemon)
+    }
+  },
+  computed: {
+    filtersPoke () {
+      return this.pokemons.filter(poke => poke.name.includes(this.filters))
     }
   },
   methods: {
@@ -106,8 +120,9 @@ export default {
 }
 .fix{
   width: 400px;
-  margin-right: 5%;
-  margin-top: -5%;
+  margin-right:auto;
+  margin-left: auto;
+  margin-top: -10%;
   position: fixed;
 }
 .center{

@@ -11,17 +11,28 @@
         large
         left
       />
-      <span class="text-h3 text font-weight-bold">{{ pokemon.name }}</span>
+      <span class="text-h4 text font-weight-bold">{{ pokemon.name }} No.{{ pokemon.order }}</span>
     </v-card-title>
     <div class="border">
       <v-img
         :src="pokemon.url"
         height="300px"
+        contain
       />
     </div>
-    <v-card-text v-for="(power, index) in pokemon.powers" :key="index" class="text-h6 pad">
-      <span v-if="power.stat.name === 'attack' || power.stat.name === 'defense' || power.stat.name === 'special-attack' "> {{ power.stat.name }} - {{ power.base_stat }}</span>
-    </v-card-text>
+    <div class="cardDesc">
+      <div>
+        <v-card-text v-for="(power, index) in pokemon.powers" :key="index" class="text-h6 pad">
+          <span v-if="power.stat.name === 'attack' || power.stat.name === 'defense' || power.stat.name === 'special-attack' "> {{ power.stat.name }} - {{ power.base_stat }}</span>
+        </v-card-text>
+      </div>
+      <div>
+        <h3 style="color:white;text-align:center;margin-top:20px">Type</h3>
+        <v-card-text v-for="(type, index) in pokemon.type" :key="index" class="text-h6 pad">
+          <v-btn> {{ type.type.name }}</v-btn>
+        </v-card-text>
+      </div>
+    </div>
 
     <v-card-actions>
       <v-list-item class="grow">
@@ -70,6 +81,10 @@ export default {
   border: 1px solid white;
   background-color: rgb(214, 204, 204);
 }
+.cardDesc{
+  display: flex;
+  justify-content: space-around;
+}
 .text{
   margin: auto;
 
@@ -77,6 +92,8 @@ export default {
 .pad{
   padding:0;
   margin-top: 10px;
+  display: flex;
+  flex-direction: column;
 }
 #padCarte{
   border-radius: 10px;
