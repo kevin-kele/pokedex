@@ -1,10 +1,16 @@
 <template>
   <div>
-    <v-img
-      class="center"
-      width="700px"
-      src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pok%C3%A9mon_logo.svg/2560px-International_Pok%C3%A9mon_logo.svg.png"
-    />
+    <div class="top">
+      <v-img
+        class="center"
+        width="50px"
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pok%C3%A9mon_logo.svg/2560px-International_Pok%C3%A9mon_logo.svg.png"
+      />
+      <div>
+        <equipe-poke :pokemons="pokeEquipeDonnee" @remove-poke="deletePoke" />
+      </div>
+    </div>
+
     <v-text-field
       v-model="filters"
       outlined
@@ -37,6 +43,7 @@
               <v-btn
                 color="red"
                 dark
+                @click="addEquipe(pokemon)"
               >
                 Add equipe
               </v-btn>
@@ -54,9 +61,11 @@
 <script>
 import axios from 'axios'
 import Pokemon from '../components/Pokemon'
+import EquipePoke from '~/components/EquipePoke.vue'
 export default {
   components: {
-    Pokemon
+    Pokemon,
+    EquipePoke
   },
   data () {
     return {
@@ -65,12 +74,14 @@ export default {
       pokemons: [],
       modalInfo: false,
       pokeData: [],
-      filters: ''
+      filters: '',
+      pokeEquipe: [],
+      pokeEquipeDonnee: []
     }
   },
   async fetch () {
     const instance = this
-    for (let i = 0; i <= 150; i++) {
+    for (let i = 0; i <= 200; i++) {
       const reponse = await axios.get(`https://pokeapi.co/api/v2/pokemon/${i + 1}`)
       const pokemon = {
         name: reponse.data.name,
@@ -88,10 +99,27 @@ export default {
       return this.pokemons.filter(poke => poke.name.includes(this.filters))
     }
   },
+  watch: {
+    pokeEquipeDonnee: {
+      handler () {
+        localStorage.setItem('equipes', JSON.stringify(this.pokeEquipeDonnee))
+      },
+      deep: true
+    }
+  },
+  mounted () {
+    if (localStorage.getItem('equipes')) {
+      this.pokeEquipeDonnee = JSON.parse(localStorage.getItem('equipes'))
+    }
+  },
   methods: {
     infoPokemon (pokeInfo) {
       this.pokeData = pokeInfo
       this.modalInfo = true
+    },
+    addEquipe (pokeInfo) {
+      this.pokeEquipeDonnee.push(pokeInfo)
+      localStorage.setItem('equipes', JSON.stringify(this.pokeEquipeDonnee))
     },
     closeModal () {
       if (this.modalInfo) {
@@ -99,16 +127,23 @@ export default {
       } else {
         this.modalInfo = true
       }
+    },
+    deletePoke (x) {
+      this.pokeEquipeDonnee.splice(x, 1)
     }
   }
 }
 </script>
 <style scoped>
+.top{
+  display: flex;
+  width: 1000px;
+  margin: auto;
+}
 .m{
   display: flex;
   flex-wrap: wrap;
-  margin-right: auto;
-  margin-left: 10%;
+  justify-content: center;
 }
 .content{
   display: flex;

@@ -74,11 +74,6 @@ export default {
           icon: 'mdi-apps',
           title: 'Pokemons',
           to: '/'
-        },
-        {
-          icon: 'mdi-chart-bubble',
-          title: 'Mon equipe',
-          to: '/equipe'
         }
       ],
       miniVariant: false,
