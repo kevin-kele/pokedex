@@ -7,7 +7,7 @@
         src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pok%C3%A9mon_logo.svg/2560px-International_Pok%C3%A9mon_logo.svg.png"
       />
       <div>
-        <equipe-poke :pokemons="pokeEquipeDonnee" @remove-poke="deletePoke" />
+        <equipe-poke @on-end="onEnd" :pokemons="pokeEquipeDonnee" @remove-poke="deletePoke" />
       </div>
     </div>
 
@@ -111,8 +111,16 @@ export default {
     if (localStorage.getItem('equipes')) {
       this.pokeEquipeDonnee = JSON.parse(localStorage.getItem('equipes'))
     }
+    if (localStorage.getItem('order')) {
+      // this.pokeEquipeDonnee = JSON.parse(localStorage.getItem('order'))
+    }
   },
   methods: {
+    onEnd (e) {
+      console.log(e)
+      // order.push(ev.relatedContext.list)
+      localStorage.setItem('order', JSON.stringify(e))
+    },
     infoPokemon (pokeInfo) {
       this.pokeData = pokeInfo
       this.modalInfo = true
