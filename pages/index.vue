@@ -1,19 +1,23 @@
 <template>
   <div>
     <div class="top">
-      <v-img
-        class="center"
-        width="50px"
-        src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pok%C3%A9mon_logo.svg/2560px-International_Pok%C3%A9mon_logo.svg.png"
-      />
-      <div>
-        <equipe-poke @on-end="onEnd" :pokemons="pokeEquipeDonnee" @remove-poke="deletePoke" />
+      <div class="imgTop">
+        <v-img
+          class="center"
+          width="378px"
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pok%C3%A9mon_logo.svg/2560px-International_Pok%C3%A9mon_logo.svg.png"
+        />
+      </div>
+
+      <div class="btnTop">
+        <equipe-poke :pokemons="pokeEquipeDonnee" @remove-poke="deletePoke" />
       </div>
     </div>
 
     <v-text-field
       v-model="filters"
       outlined
+      class="search"
       label="Pokédex National"
     />
     <div class="content">
@@ -116,11 +120,6 @@ export default {
     }
   },
   methods: {
-    onEnd (e) {
-      console.log(e)
-      // order.push(ev.relatedContext.list)
-      localStorage.setItem('order', JSON.stringify(e))
-    },
     infoPokemon (pokeInfo) {
       this.pokeData = pokeInfo
       this.modalInfo = true
@@ -145,9 +144,11 @@ export default {
 <style scoped>
 .top{
   display: flex;
-  width: 1000px;
   margin: auto;
+  justify-content: center;
+  flex-wrap: wrap;
 }
+
 .m{
   display: flex;
   flex-wrap: wrap;
@@ -165,12 +166,24 @@ export default {
   width: 400px;
   margin-right:auto;
   margin-left: auto;
-  margin-top: -10%;
+  margin-top: -14%;
   position: fixed;
 }
 .center{
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 2%;
+}
+.btnTop{
+  display: flex;
+  align-items: center;
+  margin-left: 10%;
+  margin-bottom: 5%;
+  margin-top: auto;
+}
+.search{
+  width: 50%;
+  margin: 2% auto auto auto;
+
 }
 </style>
